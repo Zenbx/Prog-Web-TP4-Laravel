@@ -149,12 +149,12 @@ php artisan serve
 ## 👨‍💻 Auteurs / Rôles
 | Nom | Rôle | Partie principale |
 |------|------|------------------|
-| Jeff Belekotan | Chef de projet | Organisation, intégration |
-| Membre 1 | Développeur CRUD | Gestion produits |
-| Membre 2 | Développeur Panier & Commandes | Gestion panier et commandes |
-| Membre 3 | Développeur Auth | Authentification |
-| Membre 4 | Développeur Admin | Tableau de bord |
-| Membre 5 | Dev BD / Seeder | Structure et data |
+| Jeff Belekotan | Chef de projet | Organisation, Structure et data|
+| Nathanaël Zuchuon | Développeur CRUD | Gestion produits |
+| Nathanaël Bisseck | Développeur Panier & Commandes | Gestion panier et commandes |
+| Odile Ayissi | Développeur Auth | Authentification |
+| Henri Fofack | Développeur Admin | Tableau de bord |
+| Tout le monde | Dev BD / Seeder | Intégration  |
 
 ---
 

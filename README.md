@@ -1,25 +1,99 @@
 # Laravel + React Starter Kit
 
-## Introduction
+## Prérequis
 
-Our React starter kit provides a robust, modern starting point for building Laravel applications with a React frontend using [Inertia](https://inertiajs.com).
+- PHP 8.1 ou supérieur
+- Composer
+- Node.js et npm
+- SQLite
 
-Inertia allows you to build modern, single-page React applications using classic server-side routing and controllers. This lets you enjoy the frontend power of React combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+## Installation
 
-This React starter kit utilizes React 19, TypeScript, Tailwind, and the [shadcn/ui](https://ui.shadcn.com) and [radix-ui](https://www.radix-ui.com) component libraries.
+1. **Cloner le projet**
 
-## Official Documentation
+```bash
+git clone <url-du-projet>
+cd crud
+```
 
-Documentation for all Laravel starter kits can be found on the [Laravel website](https://laravel.com/docs/starter-kits).
+2. **Installer les dépendances**
 
-## Contributing
+```bash
+composer install
+npm install
+```
 
-Thank you for considering contributing to our starter kit! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Configuration de l'environnement**
 
-## Code of Conduct
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Configuration de la base de données**
 
-## License
+Le projet utilise SQLite par défaut. Dans `.env` :
 
-The Laravel + React starter kit is open-sourced software licensed under the MIT license.
+```env
+DB_CONNECTION=sqlite
+```
+
+Créer la base de données :
+
+```bash
+type nul > database/database.sqlite
+php artisan migrate
+```
+
+## Démarrage
+
+1. **Lancer le serveur Laravel**
+
+```bash
+php artisan serve
+```
+
+2. **Compiler les assets**
+
+```bash
+npm run dev
+```
+
+L'application sera accessible sur :
+
+- Application : <http://localhost:8000>
+- Serveur Vite : <http://localhost:5173> (développement uniquement)
+
+## Structure du projet
+
+- `app/` - Code backend (Controllers, Models)
+- `resources/` - Code frontend (React, CSS)
+- `database/` - Migrations et seeds
+- `routes/` - Configuration des routes
+- `public/` - Assets compilés
+
+## Technologies
+
+- Laravel 10
+- React 19
+- TypeScript
+- Tailwind CSS
+- Inertia.js
+- shadcn/ui
+- radix-ui
+
+## Documentation officielle
+
+Documentation pour tous les Laravel starter kits sur le [site Laravel](https://laravel.com/docs/starter-kits).
+
+## Contribution
+
+Merci de considérer une contribution à notre starter kit ! Le guide de contribution se trouve dans la [documentation Laravel](https://laravel.com/docs/contributions).
+
+## Code de conduite
+
+Pour assurer que la communauté Laravel soit accueillante pour tous, veuillez consulter et respecter le [Code de Conduite](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Licence
+
+Le Laravel + React starter kit est un logiciel open-source sous licence MIT.

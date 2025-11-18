@@ -1,65 +1,363 @@
-<x-guest-layout>
-    <div class="min-h-screen flex flex-col items-center justify-center bg-background py-12 px-6">
-        <div class="w-full max-w-md bg-white rounded-2xl shadow-soft p-8">
-            <h2 class="text-2xl font-semibold text-primary text-center mb-6">
-                {{ __('Connexion à votre compte') }}
-            </h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Connexion - TechStorm</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-            <!-- Session Status -->
-            <x-auth-session-status class="mb-4" :status="session('status')" />
+        body {
+            background: radial-gradient(circle at 85% 20%, rgba(0, 255, 255, 1) 0%, rgba(0, 255, 255, 1) 0%, rgba(2, 0, 36, 1) 20%),
+                        radial-gradient(circle at 70% 70%, rgba(0, 255, 255, 1) 0%, rgba(0, 255, 255, 1) 0%, rgba(2, 0, 36, 1) 30%);
+            background-blend-mode: soft-light;
+            min-height: 100vh;
+            background-size: cover;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 2rem;
+        }
 
-            <form method="POST" action="{{ route('login') }}" class="space-y-6">
-                @csrf
+        .Author {
+            color: White;
+            font-size: 50px;
+            font-weight: 700;
+        }
 
-                <!-- Email Address -->
-                <div>
-                    <x-input-label for="email" :value="__('Adresse e-mail')" class="text-gray-700 font-medium" />
-                    <x-text-input id="email" class="block mt-2 w-full rounded-lg border-gray-300 focus:border-primary focus:ring focus:ring-primary/20" 
-                        type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                </div>
+        .login-card {
+            background: #020024;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+            width: 100%;
+            max-width: 450px;
+        }
 
-                <!-- Password -->
-                <div>
-                    <x-input-label for="password" :value="__('Mot de passe')" class="text-gray-700 font-medium" />
-                    <x-text-input id="password" class="block mt-2 w-full rounded-lg border-gray-300 focus:border-primary focus:ring focus:ring-primary/20"
-                        type="password" name="password" required autocomplete="current-password" />
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                </div>
+        #connexion {
+            background: linear-gradient(90deg, #00D4FF, #AE00FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
 
-                <!-- Remember Me -->
-                <div class="flex items-center justify-between">
-                    <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox"
-                            class="rounded border-gray-300 text-primary shadow-sm focus:ring-primary"
-                            name="remember">
-                        <span class="ms-2 text-sm text-gray-600">{{ __('Se souvenir de moi') }}</span>
-                    </label>
+        #google-btn {
+            width: 100%;
+            background: #121024;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 2px solid #00ffff;
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+            font-size: 0.95rem;
+        }
 
-                    @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}"
-                           class="text-sm text-primary hover:text-blue-700 transition">
-                            {{ __('Mot de passe oublié ?') }}
-                        </a>
-                    @endif
-                </div>
+        #google-btn:hover {
+            box-shadow: 0 0 10px #00ffff;
+        }
 
-                <!-- Bouton Connexion -->
-                <div>
-                    <button type="submit"
-                        class="w-full bg-primary text-white font-medium py-2 rounded-lg hover:bg-blue-600 transition shadow-soft">
-                        {{ __('Se connecter') }}
-                    </button>
-                </div>
+        .login-card #google-btn img {
+            width: 20px;
+            height: 20px;
+        }
 
-                <!-- Lien vers inscription -->
-                <div class="text-center mt-6 border-t border-gray-200 pt-4">
-                    <span class="text-sm text-gray-600">{{ __("Vous n'avez pas de compte ?") }}</span>
-                    <a href="{{ route('register') }}" class="text-sm font-medium text-primary hover:text-blue-700 transition">
-                        {{ __('Inscrivez-vous') }}
-                    </a>
-                </div>
-            </form>
+        #ou {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: white;
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .line {
+            flex: 1;
+            height: 1px;
+            background-color: white;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .form input {
+            width: 100%;
+            background: #121024;
+            color: white;
+            padding: 12px 16px;
+            margin-top: 15px;
+            border-radius: 10px;
+            border: 2px solid #00ffff;
+            transition: box-shadow 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .form input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form input:hover,
+        .form input:focus {
+            box-shadow: 0 0 10px #00ffff;
+            outline: none;
+        }
+
+        #forgot {
+            color: #00ffff;
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+            font-size: 0.9rem;
+        }
+
+        #forgot:hover {
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        #forgotDiv {
+            margin-top: 15px;
+            text-align: right;
+            width: 100%;
+        }
+
+        #login-btn {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(174, 0, 255, 1) 100%);
+            border-radius: 10px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: box-shadow 0.3s;
+            font-size: 1rem;
+        }
+
+        #login-btn:hover {
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        .register {
+            margin-top: 10px;
+        }
+
+        #PasDeCompte {
+            color: white;
+            font-size: 14px;
+        }
+
+        #CreerCompte {
+            color: #00D4FF;
+            font-size: 14px;
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        #CreerCompte:hover {
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.5);
+            color: #ff6b6b;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .error-input {
+            border-color: #ff6b6b !important;
+        }
+
+        /* RESPONSIVE - TABLETTES */
+        @media screen and (max-width: 1024px) {
+            body {
+                gap: 3rem;
+            }
+
+            .Author {
+                font-size: 40px;
+            }
+
+            .login-card {
+                max-width: 400px;
+            }
+        }
+
+        /* RESPONSIVE - MOBILE */
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+                gap: 2rem;
+                padding: 30px 20px;
+            }
+
+            .Author {
+                font-size: 36px;
+                text-align: center;
+            }
+
+            .login-card {
+                max-width: 100%;
+                padding: 30px 25px;
+            }
+
+            #connexion {
+                font-size: 1.8rem;
+            }
+
+            #google-btn {
+                font-size: 0.9rem;
+                padding: 10px 14px;
+            }
+
+            .form input {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+
+            #login-btn {
+                font-size: 0.95rem;
+                padding: 10px 14px;
+            }
+        }
+
+        /* RESPONSIVE - PETIT MOBILE */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .Author {
+                font-size: 28px;
+            }
+
+            .login-card {
+                padding: 25px 20px;
+            }
+
+            #connexion {
+                font-size: 1.5rem;
+            }
+
+            #google-btn {
+                font-size: 0.85rem;
+                padding: 8px 12px;
+            }
+
+            .form input {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                margin-top: 12px;
+            }
+
+            #login-btn {
+                font-size: 0.9rem;
+                padding: 9px 12px;
+            }
+
+            #PasDeCompte,
+            #CreerCompte {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="Author">TechStorm</div>
+    <div class="login-card">
+        <h1 id="connexion">Connexion</h1>
+
+        @if (session('status'))
+            <div class="error-message">
+                {{ session('status') }}
+            </div>
+        @endif
+
+        <button id="google-btn" type="button">
+            <div><img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" /></div>
+            <div>Se connecter avec Google</div>
+        </button>
+
+        <div id="ou">
+            <div class="line"></div>
+            <div>OU</div>
+            <div class="line"></div>
         </div>
+
+        <form method="POST" action="{{ route('login') }}" class="form">
+            @csrf
+
+            <div>
+                <input type="email" 
+                       name="email" 
+                       placeholder="E-mail" 
+                       value="{{ old('email') }}"
+                       class="@error('email') error-input @enderror"
+                       required 
+                       autofocus />
+                @error('email')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div>
+                <input type="password" 
+                       name="password" 
+                       placeholder="Mot de passe"
+                       class="@error('password') error-input @enderror"
+                       required />
+                @error('password')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div id="forgotDiv">
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}" id="forgot">Mot de passe oublié?</a>
+                @endif
+            </div>
+
+            <button type="submit" id="login-btn">SE CONNECTER</button>
+        </form>
+
+        <p class="register">
+            <span id="PasDeCompte">Pas encore de compte?</span> 
+            <a href="{{ route('register') }}" id="CreerCompte">Créer un compte</a>.
+        </p>
     </div>
-</x-guest-layout>
+</body>
+</html>
+
+
